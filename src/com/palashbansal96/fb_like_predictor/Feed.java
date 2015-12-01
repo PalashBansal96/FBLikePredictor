@@ -28,16 +28,19 @@ public class Feed {
 
 	private void fetchFeed() throws IOException, FacebookErrorException, JSONException {
 		posts = new ArrayList<>();
-		JSONObject jsonFeed = DataFetcher.getData(id+"/feed");
+		JSONObject jsonFeed = DataFetcher.getData(id+"/posts", 25, "fields=likes,name,message,shares,story,created_time,message_tags,link");
 		JSONArray feedData = jsonFeed.getJSONArray("data");
 		while (feedData.length()>0){
 			for(int i=0; i<feedData.length(); i++){
-				posts.add(new Post(feedData.getJSONObject(i).getString("id")));
+				posts.add(new Post(feedData.getJSONObject(i).getString("id"), feedData.getJSONObject(i)));
 			}
 			if(jsonFeed.getJSONObject("paging").has("next")) {
 				jsonFeed = DataFetcher.getDataFromURL(jsonFeed.getJSONObject("paging").getString("next"));
 				feedData = jsonFeed.getJSONArray("data");
 			}else break;
+		}
+		for(Post post : posts){
+			System.out.println(post.getNoOfLikes()+" | "+post.getMessage());
 		}
 	}
 

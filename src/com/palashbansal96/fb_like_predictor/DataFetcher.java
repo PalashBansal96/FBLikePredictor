@@ -26,19 +26,22 @@ public class DataFetcher {
 		DataFetcher.access_token = access_token;
 	}
 
-	public static JSONObject getData(String id) throws JSONException, IOException, FacebookErrorException {
-//		System.out.println("Requesting: "+id);
-		String url = "https://graph.facebook.com/v2.5/" + id + "?limit=25&format=json&access_token=" + access_token;
+	public static JSONObject getData(String id, int limit, String param) throws JSONException, IOException, FacebookErrorException {
+		String url = "https://graph.facebook.com/v2.5/" + id + "?limit="+ limit +"&format=json"+ param +"+&access_token=" + access_token;
 		return getDataFromURL(url);
+	}
+
+	public static JSONObject getData(String id) throws JSONException, IOException, FacebookErrorException {
+		return getData(id, 100, "");
 	}
 
 	public static JSONObject getDataFromURL(String url) throws JSONException, IOException, FacebookErrorException {
 		JSONObject jsonObject = new JSONObject(IOUtils.toString(new URL(url), Charset.forName("UTF-8")));
 		if(jsonObject.has("error")) {
 			int error_code = jsonObject.getJSONObject("error").getInt("code");
-			if(error_code!=100)
-				throw new FacebookErrorException(jsonObject.getString("error"));
+			throw new FacebookErrorException(jsonObject.getString("error"), error_code);
 		}
 		return jsonObject;
 	}
+
 }
