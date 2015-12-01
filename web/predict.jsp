@@ -1,6 +1,4 @@
 <%@ page import="com.palashbansal96.fb_like_predictor.Feed" %>
-<%@ page import="com.google.appengine.labs.repackaged.org.json.JSONException" %>
-<%@ page import="com.palashbansal96.fb_like_predictor.FacebookErrorException" %>
 <%@ page import="com.palashbansal96.fb_like_predictor.DataFetcher" %><%--
   User: Palash
   Date: 12/2/2015

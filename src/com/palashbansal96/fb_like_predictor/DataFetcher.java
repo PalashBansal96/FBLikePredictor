@@ -36,6 +36,7 @@ public class DataFetcher {
 	}
 
 	public static JSONObject getDataFromURL(String url) throws JSONException, IOException, FacebookErrorException {
+		System.out.println(url);
 		JSONObject jsonObject = new JSONObject(IOUtils.toString(new URL(url), Charset.forName("UTF-8")));
 		if(jsonObject.has("error")) {
 			int error_code = jsonObject.getJSONObject("error").getInt("code");
