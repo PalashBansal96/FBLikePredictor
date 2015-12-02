@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Feed {
 	private String id;
 
-	private ArrayList<Post> posts;
+	private PostSet posts;
 
 	public Feed() throws JSONException, FacebookErrorException, IOException {
 		this.id = "me";
@@ -27,24 +27,22 @@ public class Feed {
 	}
 
 	private void fetchFeed() throws IOException, FacebookErrorException, JSONException {
-		posts = new ArrayList<>();
-		JSONObject jsonFeed = DataFetcher.getData(id+"/posts", 25, "&fields=likes,name,message,shares,story,created_time,message_tags,link");
+		posts = new PostSet();
+		JSONObject jsonFeed = DataFetcher.getData(id+"/posts", 25, "&fields=likes.limit(25),name,message,shares,story,created_time,message_tags,link");
 		JSONArray feedData = jsonFeed.getJSONArray("data");
 		while (feedData.length()>0){
 			for(int i=0; i<feedData.length(); i++){
 				posts.add(new Post(feedData.getJSONObject(i).getString("id"), feedData.optJSONObject(i)));
 			}
+
 			if(jsonFeed.getJSONObject("paging").has("next")) {
 				jsonFeed = DataFetcher.getDataFromURL(jsonFeed.getJSONObject("paging").getString("next"));
 				feedData = jsonFeed.getJSONArray("data");
 			}else break;
 		}
-		for(Post post : posts){
-			System.out.println(post.getNoOfLikes()+" | "+post.getLink());
-		}
 	}
 
 	public ArrayList<Post> getPosts() {
-		return posts;
+		return posts.getList();
 	}
 }
