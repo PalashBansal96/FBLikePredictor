@@ -8,15 +8,51 @@
 <html>
   <head>
     <title>FB Like predictor</title>
+	  <style type="text/css">
+		  body {
+			  background-color: #000
+		  }
+		  #console {
+			  font-family: courier, monospace;
+			  color: #fff;
+			  width:750px;
+			  margin-left:auto;
+			  margin-right:auto;
+			  margin-top:100px;
+			  font-size:14px;
+		  }
+		  .line {
+			  margin: -20px;
+		  }
+		  a {
+			  color: #0bc;
+			  text-decoration: none;
+		  }
+		  .a {
+			  color: #0f0;
+		  }
+		  .c {
+			  color: #0bc;
+		  }
+		  .b {
+			  color: #ff0096;
+		  }
+	  </style>
   </head>
   <body>
-
+  <%
+	  String id="me";
+	  if(request.getParameter("id")!=null){
+		  id = request.getParameter("id");
+	  }
+  %>
   <script>
 	  function statusChangeCallback(response) {
 		  console.log('statusChangeCallback');
 		  console.log(response);
 		  if (response.status === 'connected') {
-			  window.location = "/predict.jsp?access-token="+FB.getAuthResponse()['accessToken'];
+			  document.getElementById('status').innerHTML = 'Predicting.. Please wait, this may take a moment.';
+			  window.location = "/predict.jsp?id=<%=id%>&access-token="+FB.getAuthResponse()['accessToken'];
 		  } else if (response.status === 'not_authorized') {
 			  document.getElementById('status').innerHTML = 'Please log ' +
 					  'into this app.';
@@ -51,10 +87,22 @@
 
   </script>
 
-  Please Login into Facebook
-  <fb:login-button scope="public_profile,email,user_posts" onlogin="checkLoginState();">
-  </fb:login-button>
-  <div id="status"></div>
+  <div id="console">
+	<span class="line">
+		<span class="a">predictor@IIIT-Delhi</span>
+		:
+		<span class="b">~</span>
+		<span class="c">$</span>
+		./predict
+		<span class="c"><%=id%></span>
+	</span>
+	  <br><br><br>
 
+  Testing Login.
+  <fb:login-button scope="public_profile,email,user_posts" onlogin="checkLoginState();">
+  </fb:login-button><br><br>
+  <div id="status" class="b">asd</div>
+
+  </div>
   </body>
 </html>

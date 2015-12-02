@@ -51,8 +51,8 @@ public class Predict {
 		for(LikedString message : testMessageSet){
 			double calculated = messageWordModel.calculateStringWeight(message.getString());
 			if(Math.abs(calculated-message.getLike_count())<10) correct++;
-			out.println("Post: <br>" + message.getString() + "<br><br> Predicted: " + Math.round(calculated) + " <br> Original:&nbsp " + message.getLike_count()+"<br><br><br>");
+			out.println("<span id=c>Post: </span><br>" + message.getString() + "<br><br> <span id=b> Predicted:</span> " + Math.round(calculated) + " <br> <span id=b>Original:&nbsp</span> " + message.getLike_count()+"<br><br><br>");
 		}
-		out.println("Accuracy(%): " + 100.0*correct/testMessageSet.size());
+		out.println("<span id=a class=line>Accuracy(%):&nbsp&nbsp&nbsp</span> " + 100.0*correct/testMessageSet.size());
 	}
 }
