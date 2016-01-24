@@ -1,6 +1,6 @@
 package com.palashbansal96.fb_like_predictor;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by Palash on 12/2/2015.
@@ -26,9 +26,14 @@ public class WordWeightModel {
 	}
 
 	public Double calculateStringWeight(String string) {
-		String[] wordList = string.replaceAll("[^a-zA-Z0-9 ]", " ").toLowerCase().split("\\s+");
+		String[] wordList = string.replaceAll("[^a-zA-Z ]", " ").toLowerCase().split("\\s+");
 		Double weight = 0.0;
+		int n_words = wordList.length;
 		for(String word : wordList){
+			if(word.length()<3){
+				n_words--;
+				continue;
+			}
 			if(words.containsKey(word))
 				weight += words.get(word).getWeight();
 			else
@@ -36,4 +41,14 @@ public class WordWeightModel {
 		}
 		return weight/wordList.length;
 	}
+	public void printWords(int n) {
+//		LinkedHashMap<String, Word> sorted = sortHashMapByValues(words);
+		int j = 0;
+		for(Word i: words.values()){
+			System.out.println(i.getWord() + ": " + i.getWeight());
+			if(j++==n)break;
+		}
+	}
+
+
 }

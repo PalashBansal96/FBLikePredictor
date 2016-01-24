@@ -28,7 +28,7 @@ public class Feed {
 
 	private void fetchFeed() throws IOException, FacebookErrorException, JSONException {
 		posts = new PostSet();
-		JSONObject jsonFeed = DataFetcher.getData(id+"/posts", 25, "&fields=likes.limit(25),name,message,shares,story,created_time,message_tags,link");
+		JSONObject jsonFeed = DataFetcher.getData(id+"/posts", 30, "&fields=likes.limit(1).summary(true),name,message,shares,story,created_time,message_tags,link");
 		JSONArray feedData = jsonFeed.getJSONArray("data");
 		while (feedData.length()>0){
 			for(int i=0; i<feedData.length(); i++){
@@ -39,10 +39,11 @@ public class Feed {
 				jsonFeed = DataFetcher.getDataFromURL(jsonFeed.getJSONObject("paging").getString("next"));
 				feedData = jsonFeed.getJSONArray("data");
 			}else break;
+			if(posts.getList().size()>500)break;
 		}
 	}
 
-	public ArrayList<Post> getPosts() {
+	public ArrayList<Post> getPostsList() {
 		return posts.getList();
 	}
 }

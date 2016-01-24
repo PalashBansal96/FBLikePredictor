@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class WordWeightTrainer {
 	WordWeightModel model;
-	Post currentPost;
 
 	public WordWeightTrainer(WordWeightModel model) {
 		this.model = model;
@@ -16,9 +15,10 @@ public class WordWeightTrainer {
 
 	void trainSet(List<LikedString> strings){
 		for(LikedString string : strings){
-			String[] words = string.getString().replaceAll("[^a-zA-Z0-9 ]", " ").toLowerCase().split("\\s+");
+			String[] words = string.getString().replaceAll("[^a-zA-Z ]", " ").toLowerCase().split("\\s+");
 			for(String word : words){
-				model.addWord(word, string.getLike_count());
+				if(word.length()>2)
+					model.addWord(word, string.getLike_count());
 			}
 		}
 	}

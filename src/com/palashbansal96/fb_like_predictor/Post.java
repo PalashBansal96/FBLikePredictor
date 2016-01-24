@@ -25,6 +25,7 @@ public class Post {
 	private Integer line_name_weight;
 	private Integer hour;
 	private Integer season;
+	private Integer n_likes;
 
 	private ArrayList<Like> likes = new ArrayList<>();
 
@@ -61,18 +62,20 @@ public class Post {
 		try{
 			likes_object = json.getJSONObject("likes");
 		}catch (JSONException e) {
-			likes_object = DataFetcher.getData(id + "/likes");
+			likes_object = DataFetcher.getData(id + "/likes", 1, "&summart=true");
 		}
-		JSONArray likes_array = likes_object.getJSONArray("data");
-		while(likes_array.length()>0) {
-			for (int i = 0; i < likes_array.length(); i++) {
-				this.likes.add(new Like(likes_array.getJSONObject(i).getString("id")));
-			}
-			if (likes_object.getJSONObject("paging").has("next")) {
-				likes_object = DataFetcher.getDataFromURL(likes_object.getJSONObject("paging").getString("next"));
-				likes_array = likes_object.getJSONArray("data");
-			} else break;
-		}
+		JSONObject summary = likes_object.getJSONObject("summary");
+		n_likes = summary.getInt("total_count");
+//		JSONArray likes_array = likes_object.getJSONArray("data");
+//		while(likes_array.length()>0) {
+//			for (int i = 0; i < likes_array.length(); i++) {
+//				this.likes.add(new Like(likes_array.getJSONObject(i).getString("id")));
+//			}
+//			if (likes_object.getJSONObject("paging").has("next")) {
+//				likes_object = DataFetcher.getDataFromURL(likes_object.getJSONObject("paging").getString("next"));
+//				likes_array = likes_object.getJSONArray("data");
+//			} else break;
+//		}
 	}
 
 
@@ -81,7 +84,7 @@ public class Post {
 	}
 
 	public int getNoOfLikes(){
-		return likes.size();
+		return n_likes;
 	}
 
 	public String getId() {

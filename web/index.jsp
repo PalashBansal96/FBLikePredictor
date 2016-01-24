@@ -101,7 +101,7 @@
   Testing Login.
   <fb:login-button scope="public_profile,email,user_posts" onlogin="checkLoginState();">
   </fb:login-button><br><br>
-  <div id="status" class="b">asd</div>
+  <div id="status" class="b">Please wait...</div>
 
   </div>
   </body>

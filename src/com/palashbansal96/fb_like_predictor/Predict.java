@@ -23,15 +23,15 @@ public class Predict {
 		feed = new Feed(id);
 		trainSet = new PostSet();
 		testSet = new PostSet();
-		Collections.shuffle(feed.getPosts());
-		int nPosts = feed.getPosts().size();
+		Collections.shuffle(feed.getPostsList());
+		int nPosts = feed.getPostsList().size();
 		int testSetLength = (int) (nPosts*0.2);
 		System.out.println(nPosts);
 		for(int i=0; i<testSetLength; i++){
-			testSet.add(feed.getPosts().get(i));
+			testSet.add(feed.getPostsList().get(i));
 		}
-		for(int i = testSetLength; i<feed.getPosts().size(); i++){
-			trainSet.add(feed.getPosts().get(i));
+		for(int i = testSetLength; i<feed.getPostsList().size(); i++){
+			trainSet.add(feed.getPostsList().get(i));
 		}
 		ArrayList<LikedString> trainMessageSet = new ArrayList<>();
 		ArrayList<LikedString> testMessageSet = new ArrayList<>();
@@ -54,5 +54,7 @@ public class Predict {
 			out.println("<span id=c>Post: </span><br>" + message.getString() + "<br><br> <span id=b> Predicted:</span> " + Math.round(calculated) + " <br> <span id=b>Original:&nbsp</span> " + message.getLike_count()+"<br><br><br>");
 		}
 		out.println("<span id=a class=line>Accuracy(%):&nbsp&nbsp&nbsp</span> " + 100.0*correct/testMessageSet.size());
+		messageWordModel.printWords(100);
+
 	}
 }
